@@ -1,0 +1,21 @@
+{
+  "name": "agentid",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Decentralized Trust Registry for Autonomous Systems",
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "lint": "turbo lint",
+    "test": "turbo test",
+    "clean": "turbo clean"
+  },
+  "devDependencies": {
+    "turbo": "^2.3.0",
+    "typescript": "^5.7.0"
+  },
+  "packageManager": "pnpm@10.15.1",
+  "engines": {
+    "node": ">=22.0.0"
+  }
+}
