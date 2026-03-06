@@ -1,7 +1,8 @@
-import { useState, useEffect, useRef } from 'preact/hooks';
+import { useState } from 'preact/hooks';
 import { Panel } from '../components/ui/Panel';
 import { Logo } from '../components/Logo';
 import { cn } from '../lib/utils';
+import { IdentityAnimation, EndpointAnimation, CapabilitiesAnimation, ConfirmAnimation } from '../components/animations/StepAnimations';
 
 const STEPS = [
   { id: 1, label: 'IDENTITY', icon: '01' },
@@ -40,40 +41,8 @@ export function Register() {
     capabilities: [] as string[],
     initialStake: '100',
   });
-  const [logs, setLogs] = useState<string[]>([
-    '> INITIALIZING REGISTRATION SEQUENCE...',
-    '> CONNECTED TO INTUITION TESTNET',
-    '> AWAITING AGENT IDENTITY INPUT...',
-  ]);
-  const logEndRef = useRef<HTMLDivElement>(null);
-
-  const addLog = (msg: string) => {
-    setLogs(prev => [...prev, `> ${msg}`]);
-  };
-
-  useEffect(() => {
-    if (logEndRef.current) {
-      logEndRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, [logs]);
 
   const handleNext = () => {
-    if (step === 1) {
-      addLog(`IDENTITY: ${formData.name || 'UNKNOWN'}`);
-      addLog('VALIDATING NAME FORMAT... OK.');
-      addLog('CHECKING NAME AVAILABILITY... AVAILABLE.');
-    }
-    if (step === 2) {
-      addLog(`ENDPOINT: ${formData.endpointUrl || 'NONE'}`);
-      addLog(`PROTOCOL: ${formData.endpointType} v${formData.version}`);
-      addLog('PINGING ENDPOINT... 200 OK (48ms)');
-    }
-    if (step === 3) {
-      addLog(`CAPABILITIES: [${formData.capabilities.join(', ')}]`);
-      addLog(`REGISTERING ${formData.capabilities.length} CAPABILITIES... OK.`);
-      addLog('GENERATING REGISTRATION PAYLOAD...');
-      addLog('READY FOR ON-CHAIN SUBMISSION.');
-    }
     setStep(Math.min(4, step + 1));
   };
 
@@ -87,7 +56,6 @@ export function Register() {
         ? prev.capabilities.filter(c => c !== cap)
         : [...prev.capabilities, cap]
     }));
-    addLog(`${removing ? '[-]' : '[+]'} ${cap.toUpperCase()}`);
   };
 
   const completionPercent = Math.round(
@@ -463,12 +431,7 @@ export function Register() {
                 </button>
               ) : (
                 <button
-                  onClick={() => {
-                    addLog('SIGNING TRANSACTION...');
-                    addLog('BROADCASTING TO INTUITION TESTNET...');
-                    setTimeout(() => addLog('TX CONFIRMED: 0xa1b2...c3d4'), 500);
-                    setTimeout(() => addLog('ATOM CREATED SUCCESSFULLY.'), 800);
-                  }}
+                  onClick={() => {}}
                   className="text-[10px] tracking-[0.2em] uppercase px-8 py-3 bg-emerald-500/10 border border-emerald-500 text-emerald-500 hover:bg-emerald-500/20 shadow-[0_0_15px_rgba(16,185,129,0.2)] transition-all flex items-center gap-2"
                 >
                   <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 13l4 4L19 7" /></svg>
@@ -479,35 +442,24 @@ export function Register() {
           </Panel>
         </div>
 
-        {/* Right: Terminal Log */}
+        {/* Right: Step Animation */}
         <div className="w-full lg:w-[380px] flex flex-col">
           <Panel className="flex-1 p-0 overflow-hidden flex flex-col border-stroke-2">
             <div className="bg-raised border-b border-stroke-2 px-4 py-2.5 flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-red-500/60" />
-              <div className="w-2 h-2 rounded-full bg-yellow-500/60" />
-              <div className="w-2 h-2 rounded-full bg-emerald-500/60" />
-              <span className="ml-3 text-fg-dim text-[10px] tracking-widest uppercase flex-1">SYSTEM LOG</span>
-              <span className="text-fg-dim text-[9px] font-mono">{logs.length} entries</span>
+              <div className={cn("w-2 h-2 rounded-full", step === 4 ? "bg-emerald-500/60" : "bg-accent/60")} />
+              <span className="ml-2 text-fg-dim text-[10px] tracking-widest uppercase flex-1">
+                {step === 1 && 'IDENTITY CREATION'}
+                {step === 2 && 'ENDPOINT VERIFICATION'}
+                {step === 3 && 'CAPABILITY MAPPING'}
+                {step === 4 && 'ON-CHAIN CONFIRMATION'}
+              </span>
+              <span className="text-fg-dim text-[9px] font-mono">STEP {step}/4</span>
             </div>
-            <div className="flex-1 p-4 bg-base font-mono text-[10px] text-fg-muted overflow-y-auto max-h-[700px] flex flex-col gap-1">
-              {logs.map((log, i) => (
-                <div key={i} className={cn(
-                  log.includes('OK') || log.includes('ADDED') || log.includes('[+]') || log.includes('AVAILABLE') || log.includes('CONFIRMED') || log.includes('SUCCESSFULLY') || log.includes('VALID')
-                    ? "text-emerald-500/80"
-                    : log.includes('REMOVED') || log.includes('[-]')
-                    ? "text-red-500/80"
-                    : log.includes('TRANSACTION') || log.includes('SIGNING') || log.includes('BROADCASTING')
-                    ? "text-accent"
-                    : log.includes('CONNECTED') || log.includes('READY')
-                    ? "text-blue-400/80"
-                    : ""
-                )}>
-                  <span className="text-fg-dim/50 mr-2">{String(i).padStart(3, '0')}</span>
-                  {log}
-                </div>
-              ))}
-              <div ref={logEndRef} />
-              <div className="animate-pulse text-accent mt-2">_</div>
+            <div className="flex-1 bg-base min-h-[400px]">
+              {step === 1 && <IdentityAnimation />}
+              {step === 2 && <EndpointAnimation />}
+              {step === 3 && <CapabilitiesAnimation />}
+              {step === 4 && <ConfirmAnimation />}
             </div>
           </Panel>
         </div>
