@@ -2,6 +2,12 @@
 
 ![cover-image](./assets/cover-image.png)
 
+[![@agentids/schema](https://img.shields.io/npm/v/@agentids/schema?label=%40agentids%2Fschema&color=blue)](https://www.npmjs.com/package/@agentids/schema)
+[![@agentids/graphql](https://img.shields.io/npm/v/@agentids/graphql?label=%40agentids%2Fgraphql&color=blue)](https://www.npmjs.com/package/@agentids/graphql)
+[![@agentids/sdk](https://img.shields.io/npm/v/@agentids/sdk?label=%40agentids%2Fsdk&color=blue)](https://www.npmjs.com/package/@agentids/sdk)
+[![@agentids/cli](https://img.shields.io/npm/v/@agentids/cli?label=%40agentids%2Fcli&color=blue)](https://www.npmjs.com/package/@agentids/cli)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 Decentralized Trust Registry for Autonomous AI Agents, built on [Intuition Protocol](https://intuition.systems).
 
 AgentID is a "Yellow Pages" for AI agents — enabling them to register identity, declare capabilities, and accrue verifiable reputation through crypto-economic staking. It uses existing Intuition MultiVault primitives (Atoms, Triples, Vaults) with no custom smart contracts.
