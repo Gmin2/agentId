@@ -52,11 +52,16 @@ export const GET_AGENT_BY_ATOM_ID = gql`
   }
 `
 
-/** Search agents by name (label). */
+/** Search agents by name (label) — only atoms that are AgentID agents. */
 export const SEARCH_AGENTS_BY_NAME = gql`
   query SearchAgentsByName($name: String!, $limit: Int = 10) {
     atoms(
-      where: { label: { _ilike: $name } }
+      where: {
+        _and: [
+          { label: { _ilike: $name } }
+          { as_subject_triples: { predicate: { label: { _eq: "has-capability" } } } }
+        ]
+      }
       order_by: [{ term: { vaults_aggregate: { sum: { total_assets: desc } } } }]
       limit: $limit
     ) {
@@ -167,17 +172,20 @@ export const GET_USER_POSITIONS = gql`
       id
       shares
       vault {
-        id
-        type
+        term_id
         market_cap
         total_assets
-        atom {
-          term_id
-          label
-          image
-        }
-        triple {
-          term_id
+        term {
+          id
+          type
+          atom {
+            term_id
+            label
+            image
+          }
+          triple {
+            term_id
+          }
         }
       }
     }

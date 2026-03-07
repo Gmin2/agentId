@@ -2,6 +2,15 @@
   "name": "@agentid/graphql",
   "version": "0.1.0",
   "description": "GraphQL queries for AgentID on Intuition Protocol",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ibishal/agentid.git",
+    "directory": "packages/graphql"
+  },
+  "keywords": ["agentid", "graphql", "intuition", "ai-agents", "trust-registry"],
+  "files": ["dist", "README.md"],
+  "sideEffects": false,
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",

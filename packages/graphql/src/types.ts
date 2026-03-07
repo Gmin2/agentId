@@ -72,12 +72,15 @@ export interface PositionData {
   id: string
   shares: string
   vault: {
-    id: string
-    type: string
+    term_id: string
     market_cap: string
     total_assets: string
-    atom: AtomBasic | null
-    triple: { term_id: string } | null
+    term: {
+      id: string
+      type: string | null
+      atom: AtomBasic | null
+      triple: { term_id: string } | null
+    } | null
   }
 }
 
