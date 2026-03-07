@@ -2,6 +2,26 @@
   "name": "@agentid/schema",
   "version": "0.1.0",
   "description": "ERC-8004 aligned JSON-LD schemas for AgentID",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ibishal/agentid.git",
+    "directory": "packages/schema"
+  },
+  "keywords": [
+    "agentid",
+    "erc-8004",
+    "schema",
+    "ai-agents",
+    "intuition",
+    "trust",
+    "zod"
+  ],
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "sideEffects": false,
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
