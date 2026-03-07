@@ -1,4 +1,0 @@
-{
-  "buildCommand": "pnpm turbo run build --filter=dashboard",
-  "outputDirectory": "apps/dashboard/dist"
-}
