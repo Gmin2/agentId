@@ -1,11 +1,11 @@
 {
   "name": "@agentids/sdk",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Core SDK for AgentID — create agents, capabilities, and stake on Intuition Protocol",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ibishal/agentid.git",
+    "url": "https://github.com/Gmin2/agentId.git",
     "directory": "packages/sdk"
   },
   "keywords": [
