@@ -1,0 +1,6 @@
+{
+  "buildCommand": "pnpm turbo run build --filter=dashboard",
+  "outputDirectory": "apps/dashboard/dist",
+  "framework": "vite",
+  "installCommand": "pnpm install"
+}
