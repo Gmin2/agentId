@@ -35,5 +35,5 @@ export {
 export { uploadJsonToPinata, pinThing, type PinataResponse, type PinThingParams } from './ipfs'
 
 // Re-export schema and graphql for convenience
-export * from '@agentid/schema'
-export * from '@agentid/graphql'
+export * from '@agentids/schema'
+export * from '@agentids/graphql'

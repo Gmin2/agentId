@@ -1,7 +1,7 @@
 import { input, select } from '@inquirer/prompts'
 import chalk from 'chalk'
 import { parseEther, type Hex } from 'viem'
-import { createCapabilityTriple, CapabilityCategoryEnum } from '@agentid/sdk'
+import { createCapabilityTriple, CapabilityCategoryEnum } from '@agentids/sdk'
 import { createWriteConfig, loadEnvConfig } from '../client.js'
 import {
   success,

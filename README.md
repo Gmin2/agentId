@@ -21,10 +21,10 @@ AgentID is a "Yellow Pages" for AI agents — enabling them to register identity
 
 | Package | Description |
 |---|---|
-| [`@agentid/schema`](./packages/schema) | ERC-8004 aligned Zod schemas for agent registration, capabilities, and trust scoring |
-| [`@agentid/graphql`](./packages/graphql) | GraphQL queries and types for querying Intuition's indexer |
-| [`@agentid/sdk`](./packages/sdk) | Core SDK — create agents, capabilities, stake, and check reputation |
-| [`@agentid/cli`](./apps/cli) | CLI tool for registering agents, managing capabilities, and checking trust |
+| [`@agentids/schema`](./packages/schema) | ERC-8004 aligned Zod schemas for agent registration, capabilities, and trust scoring |
+| [`@agentids/graphql`](./packages/graphql) | GraphQL queries and types for querying Intuition's indexer |
+| [`@agentids/sdk`](./packages/sdk) | Core SDK — create agents, capabilities, stake, and check reputation |
+| [`@agentids/cli`](./apps/cli) | CLI tool for registering agents, managing capabilities, and checking trust |
 | [`dashboard`](./apps/dashboard) | Web dashboard for exploring agents, staking, and viewing portfolio |
 
 ## Quick Start

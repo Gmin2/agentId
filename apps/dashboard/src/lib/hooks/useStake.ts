@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'preact/hooks'
 import { parseEther, type Hex } from 'viem'
-import { MultiVaultAbi } from '@agentid/sdk'
+import { MultiVaultAbi } from '@agentids/sdk'
 import { useWallet } from '../wallet.tsx'
 
 type StakeStatus = 'idle' | 'signing' | 'confirming' | 'success' | 'error'

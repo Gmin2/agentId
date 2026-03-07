@@ -7,7 +7,7 @@ import {
   type AgentRegistration,
   type CapabilityCategory,
   CapabilityCategoryEnum,
-} from '@agentid/sdk'
+} from '@agentids/sdk'
 import { createWriteConfig, loadEnvConfig } from '../client.js'
 import {
   success,

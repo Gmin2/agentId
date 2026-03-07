@@ -10,7 +10,7 @@ import {
   header,
   separator,
 } from '../utils/display.js'
-import type { TrustScore } from '@agentid/sdk'
+import type { TrustScore } from '@agentids/sdk'
 
 describe('display utilities', () => {
   describe('truncHex', () => {

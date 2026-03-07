@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'preact/hooks';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { SEARCH_AGENTS_BY_NAME, type SearchAgentsByNameResponse } from '@agentid/graphql';
-import { calculateTrustScore, type TrustScoreInput } from '@agentid/schema';
+import { SEARCH_AGENTS_BY_NAME, type SearchAgentsByNameResponse } from '@agentids/graphql';
+import { calculateTrustScore, type TrustScoreInput } from '@agentids/schema';
 import { graphqlClient } from '../lib/graphql';
 
 interface FeaturedAgent {

@@ -2,14 +2,14 @@ import {
   calculateTrustScore,
   type TrustScore,
   type TrustScoreInput,
-} from '@agentid/schema'
+} from '@agentids/schema'
 import {
   GET_AGENT_BY_ATOM_ID,
   SEARCH_AGENTS_BY_NAME,
   type GetAgentByAtomIdResponse,
   type SearchAgentsByNameResponse,
   type AgentAtomData,
-} from '@agentid/graphql'
+} from '@agentids/graphql'
 import type { AgentIdReadConfig } from './config'
 
 export interface AgentReputation {

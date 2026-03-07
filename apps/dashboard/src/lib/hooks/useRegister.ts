@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'preact/hooks'
 import { toHex, parseEther, decodeEventLog, type Hex } from 'viem'
-import { MultiVaultAbi } from '@agentid/sdk'
-import type { AgentRegistration } from '@agentid/schema'
+import { MultiVaultAbi } from '@agentids/sdk'
+import type { AgentRegistration } from '@agentids/schema'
 import { useWallet } from '../wallet.tsx'
 
 type RegisterStep = 'idle' | 'uploading' | 'creating-atom' | 'adding-capabilities' | 'success' | 'error'

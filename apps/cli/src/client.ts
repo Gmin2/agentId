@@ -5,7 +5,7 @@ import {
   type AgentIdWriteConfig,
   type AgentIdReadConfig,
   INTUITION_NETWORKS,
-} from '@agentid/sdk'
+} from '@agentids/sdk'
 
 const intuitionTestnet: Chain = {
   id: 13579,

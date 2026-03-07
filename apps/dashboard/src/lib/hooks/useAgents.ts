@@ -5,7 +5,7 @@ import {
   type SearchAgentsByNameResponse,
   type SearchAgentsByCapabilityResponse,
   type AtomWithVault,
-} from '@agentid/graphql'
+} from '@agentids/graphql'
 import { graphqlClient } from '../graphql.ts'
 
 export interface AgentListItem {

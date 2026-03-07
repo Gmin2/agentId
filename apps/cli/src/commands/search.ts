@@ -4,7 +4,7 @@ import {
   SEARCH_AGENTS_BY_NAME,
   INTUITION_GRAPHQL_ENDPOINTS,
   type SearchAgentsByNameResponse,
-} from '@agentid/sdk'
+} from '@agentids/sdk'
 import { loadEnvConfig } from '../client.js'
 import {
   error,

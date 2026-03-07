@@ -5,7 +5,7 @@ import { AgentAvatar } from '../components/ui/AgentAvatar';
 import { cn } from '../lib/utils';
 import { useAgents, type AgentListItem } from '../lib/hooks/useAgents';
 import { formatTrust, truncAddress } from '../lib/format';
-import { calculateTrustScore, type TrustScoreInput } from '@agentid/schema';
+import { calculateTrustScore, type TrustScoreInput } from '@agentids/schema';
 
 const CATEGORIES = [
   'data-processing', 'code-generation', 'task-automation', 'communication',

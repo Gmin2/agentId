@@ -1,5 +1,5 @@
 import chalk from 'chalk'
-import type { TrustScore } from '@agentid/sdk'
+import type { TrustScore } from '@agentids/sdk'
 
 /** Truncate a hex string for display: 0x1234...5678 */
 export function truncHex(hex: string, chars = 4): string {

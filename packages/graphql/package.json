@@ -1,5 +1,5 @@
 {
-  "name": "@agentid/graphql",
+  "name": "@agentids/graphql",
   "version": "0.1.0",
   "description": "GraphQL queries for AgentID on Intuition Protocol",
   "license": "MIT",
@@ -10,6 +10,9 @@
   },
   "keywords": ["agentid", "graphql", "intuition", "ai-agents", "trust-registry"],
   "files": ["dist", "README.md"],
+  "publishConfig": {
+    "access": "public"
+  },
   "sideEffects": false,
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

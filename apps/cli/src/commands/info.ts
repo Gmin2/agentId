@@ -1,5 +1,5 @@
 import chalk from 'chalk'
-import { getAgentReputation } from '@agentid/sdk'
+import { getAgentReputation } from '@agentids/sdk'
 import { createReadConfig, loadEnvConfig } from '../client.js'
 import {
   error,

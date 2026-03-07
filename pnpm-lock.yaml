@@ -17,7 +17,7 @@ importers:
 
   apps/cli:
     dependencies:
-      '@agentid/sdk':
+      '@agentids/sdk':
         specifier: workspace:*
         version: link:../../packages/sdk
       '@inquirer/prompts':
@@ -60,13 +60,13 @@ importers:
 
   apps/dashboard:
     dependencies:
-      '@agentid/graphql':
+      '@agentids/graphql':
         specifier: workspace:*
         version: link:../../packages/graphql
-      '@agentid/schema':
+      '@agentids/schema':
         specifier: workspace:*
         version: link:../../packages/schema
-      '@agentid/sdk':
+      '@agentids/sdk':
         specifier: workspace:*
         version: link:../../packages/sdk
       '@tailwindcss/vite':
@@ -165,10 +165,10 @@ importers:
 
   packages/sdk:
     dependencies:
-      '@agentid/graphql':
+      '@agentids/graphql':
         specifier: workspace:*
         version: link:../graphql
-      '@agentid/schema':
+      '@agentids/schema':
         specifier: workspace:*
         version: link:../schema
       graphql:

@@ -6,7 +6,7 @@ import { cn } from '../lib/utils';
 import { IdentityAnimation, EndpointAnimation, CapabilitiesAnimation, ConfirmAnimation } from '../components/animations/StepAnimations';
 import { useRegister } from '../lib/hooks/useRegister';
 import { useWallet } from '../lib/wallet';
-import type { AgentRegistration, CapabilityCategory } from '@agentid/schema';
+import type { AgentRegistration, CapabilityCategory } from '@agentids/schema';
 
 const STEPS = [
   { id: 1, label: 'IDENTITY', icon: '01' },

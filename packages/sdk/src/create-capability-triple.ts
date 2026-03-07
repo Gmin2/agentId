@@ -1,6 +1,6 @@
 import { toHex, decodeEventLog, type Hex } from 'viem'
-import { PREDICATES } from '@agentid/schema'
-import { GET_ATOM_BY_LABEL, type GetAtomByLabelResponse } from '@agentid/graphql'
+import { PREDICATES } from '@agentids/schema'
+import { GET_ATOM_BY_LABEL, type GetAtomByLabelResponse } from '@agentids/graphql'
 import { MultiVaultAbi } from './abi'
 import type { AgentIdWriteConfig } from './config'
 

@@ -3,8 +3,8 @@ import {
   GET_AGENT_BY_ATOM_ID,
   type GetAgentByAtomIdResponse,
   type AgentAtomData,
-} from '@agentid/graphql'
-import { calculateTrustScore, type TrustScore, type TrustScoreInput } from '@agentid/schema'
+} from '@agentids/graphql'
+import { calculateTrustScore, type TrustScore, type TrustScoreInput } from '@agentids/schema'
 import { graphqlClient } from '../graphql.ts'
 
 export interface AgentDetail {

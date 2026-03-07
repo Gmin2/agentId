@@ -1,7 +1,7 @@
 import { input, confirm } from '@inquirer/prompts'
 import chalk from 'chalk'
 import { parseEther, type Hex } from 'viem'
-import { stakeOnAgent } from '@agentid/sdk'
+import { stakeOnAgent } from '@agentids/sdk'
 import { createWriteConfig, loadEnvConfig } from '../client.js'
 import {
   success,

@@ -9,9 +9,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@agentid/graphql": "workspace:*",
-    "@agentid/schema": "workspace:*",
-    "@agentid/sdk": "workspace:*",
+    "@agentids/graphql": "workspace:*",
+    "@agentids/schema": "workspace:*",
+    "@agentids/sdk": "workspace:*",
     "@tailwindcss/vite": "^4.2.1",
     "cobe": "^0.6.5",
     "clsx": "^2.1.1",

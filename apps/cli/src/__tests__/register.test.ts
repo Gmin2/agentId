@@ -8,8 +8,8 @@ vi.mock('@inquirer/prompts', () => ({
   checkbox: vi.fn(),
 }))
 
-vi.mock('@agentid/sdk', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('@agentid/sdk')>()
+vi.mock('@agentids/sdk', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@agentids/sdk')>()
   return {
     ...actual,
     createAgentAtom: vi.fn().mockResolvedValue({
@@ -41,7 +41,7 @@ vi.mock('../client.js', () => ({
 
 import { registerCommand } from '../commands/register.js'
 import { input, select, confirm, checkbox } from '@inquirer/prompts'
-import { createAgentAtom, createCapabilityTriple } from '@agentid/sdk'
+import { createAgentAtom, createCapabilityTriple } from '@agentids/sdk'
 import { loadEnvConfig } from '../client.js'
 
 describe('registerCommand', () => {

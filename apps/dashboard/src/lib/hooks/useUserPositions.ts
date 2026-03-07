@@ -3,7 +3,7 @@ import {
   GET_USER_POSITIONS,
   type GetUserPositionsResponse,
   type PositionData,
-} from '@agentid/graphql'
+} from '@agentids/graphql'
 import { graphqlClient } from '../graphql.ts'
 import { useWallet } from '../wallet.tsx'
 

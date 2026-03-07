@@ -1,11 +1,11 @@
-# @agentid/graphql
+# @agentids/graphql
 
 GraphQL queries, client factory, and TypeScript types for querying AgentID data from Intuition Protocol's indexer.
 
 ## Install
 
 ```bash
-npm install @agentid/graphql
+npm install @agentids/graphql
 ```
 
 ## Usage
@@ -13,7 +13,7 @@ npm install @agentid/graphql
 ### Create a Client
 
 ```typescript
-import { createGraphQLClient, INTUITION_GRAPHQL_ENDPOINTS } from '@agentid/graphql'
+import { createGraphQLClient, INTUITION_GRAPHQL_ENDPOINTS } from '@agentids/graphql'
 
 const client = createGraphQLClient('testnet')
 // or with a custom endpoint:
@@ -29,7 +29,7 @@ import {
   GET_AGENT_CAPABILITIES,
   type SearchAgentsByNameResponse,
   type GetAgentByAtomIdResponse,
-} from '@agentid/graphql'
+} from '@agentids/graphql'
 
 // Search agents by name
 const results = await client.request<SearchAgentsByNameResponse>(
@@ -53,7 +53,7 @@ const caps = await client.request(
 ### Query User Positions
 
 ```typescript
-import { GET_USER_POSITIONS, type GetUserPositionsResponse } from '@agentid/graphql'
+import { GET_USER_POSITIONS, type GetUserPositionsResponse } from '@agentids/graphql'
 
 const positions = await client.request<GetUserPositionsResponse>(
   GET_USER_POSITIONS,

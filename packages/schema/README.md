@@ -1,11 +1,11 @@
-# @agentid/schema
+# @agentids/schema
 
 ERC-8004 aligned Zod schemas for the AgentID trust registry. Defines validation schemas and TypeScript types for agent registration, capabilities, endpoints, predicates, and trust scoring.
 
 ## Install
 
 ```bash
-npm install @agentid/schema
+npm install @agentids/schema
 ```
 
 ## Usage
@@ -13,7 +13,7 @@ npm install @agentid/schema
 ### Agent Registration
 
 ```typescript
-import { AgentRegistrationSchema, type AgentRegistration } from '@agentid/schema'
+import { AgentRegistrationSchema, type AgentRegistration } from '@agentids/schema'
 
 const registration = AgentRegistrationSchema.parse({
   type: 'https://eips.ethereum.org/EIPS/eip-8004#registration-v1',
@@ -30,7 +30,7 @@ const registration = AgentRegistrationSchema.parse({
 ### Trust Score Calculation
 
 ```typescript
-import { calculateTrustScore, type TrustScoreInput } from '@agentid/schema'
+import { calculateTrustScore, type TrustScoreInput } from '@agentids/schema'
 
 const input: TrustScoreInput = {
   totalStaked: 5_000_000_000_000_000_000n, // 5 ETH
@@ -51,7 +51,7 @@ const score = calculateTrustScore(input)
 ### Capabilities
 
 ```typescript
-import { CapabilitySchema, CapabilityCategoryEnum } from '@agentid/schema'
+import { CapabilitySchema, CapabilityCategoryEnum } from '@agentids/schema'
 
 const cap = CapabilitySchema.parse({
   name: 'code-generation',
@@ -63,7 +63,7 @@ const cap = CapabilitySchema.parse({
 ### Predicates
 
 ```typescript
-import { PREDICATES } from '@agentid/schema'
+import { PREDICATES } from '@agentids/schema'
 
 // Available predicates for Intuition Triples:
 // 'has-capability' | 'operated-by' | 'endorses' | 'reports-issue'

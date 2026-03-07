@@ -1,11 +1,11 @@
-# @agentid/sdk
+# @agentids/sdk
 
 Core SDK for AgentID — create agent atoms, declare capabilities, stake on agents, and query trust scores on Intuition Protocol.
 
 ## Install
 
 ```bash
-npm install @agentid/sdk
+npm install @agentids/sdk
 ```
 
 ## Setup
@@ -13,7 +13,7 @@ npm install @agentid/sdk
 ```typescript
 import { createPublicClient, createWalletClient, http } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
-import { createGraphQLClient, INTUITION_NETWORKS } from '@agentid/sdk'
+import { createGraphQLClient, INTUITION_NETWORKS } from '@agentids/sdk'
 
 const net = INTUITION_NETWORKS.testnet
 
@@ -37,7 +37,7 @@ const config = {
 ### Create an Agent Atom
 
 ```typescript
-import { createAgentAtom } from '@agentid/sdk'
+import { createAgentAtom } from '@agentids/sdk'
 
 const result = await createAgentAtom(config, {
   name: 'CodeReviewBot',
@@ -54,7 +54,7 @@ console.log(result.fullRegistrationUri)   // 'ipfs://Qm...' (if Pinata JWT provi
 ### Add a Capability
 
 ```typescript
-import { createCapabilityTriple } from '@agentid/sdk'
+import { createCapabilityTriple } from '@agentids/sdk'
 
 const result = await createCapabilityTriple(config, {
   agentAtomId: '0x199aa1e...',
@@ -69,7 +69,7 @@ console.log(result.tripleId)  // '0x9876...'
 ### Stake on an Agent
 
 ```typescript
-import { stakeOnAgent, counterSignalTriple } from '@agentid/sdk'
+import { stakeOnAgent, counterSignalTriple } from '@agentids/sdk'
 
 // Stake FOR (trust signal)
 const stake = await stakeOnAgent(config, {
@@ -87,7 +87,7 @@ const counter = await counterSignalTriple(config, {
 ### Get Agent Reputation
 
 ```typescript
-import { getAgentReputation } from '@agentid/sdk'
+import { getAgentReputation } from '@agentids/sdk'
 
 const rep = await getAgentReputation(readConfig, '0x199aa1e...')
 
@@ -100,7 +100,7 @@ console.log(rep.recommendation)    // 'Trusted agent. Safe for most tasks.'
 ### IPFS Uploads
 
 ```typescript
-import { pinThing, uploadJsonToPinata } from '@agentid/sdk'
+import { pinThing, uploadJsonToPinata } from '@agentids/sdk'
 
 // Use Intuition's pinThing for atom labels (recommended)
 const uri = await pinThing('https://testnet.intuition.sh/v1/graphql', {
@@ -115,16 +115,16 @@ const pinata = await uploadJsonToPinata('YOUR_JWT', { name: 'MyAgent', ... })
 
 ## Re-exports
 
-For convenience, `@agentid/sdk` re-exports everything from `@agentid/schema` and `@agentid/graphql`:
+For convenience, `@agentids/sdk` re-exports everything from `@agentids/schema` and `@agentids/graphql`:
 
 ```typescript
-import { calculateTrustScore, SEARCH_AGENTS_BY_NAME } from '@agentid/sdk'
+import { calculateTrustScore, SEARCH_AGENTS_BY_NAME } from '@agentids/sdk'
 ```
 
 ## Network Constants
 
 ```typescript
-import { INTUITION_NETWORKS } from '@agentid/sdk'
+import { INTUITION_NETWORKS } from '@agentids/sdk'
 
 INTUITION_NETWORKS.testnet.chainId          // 13579
 INTUITION_NETWORKS.testnet.rpcUrl           // 'https://testnet.rpc.intuition.systems'

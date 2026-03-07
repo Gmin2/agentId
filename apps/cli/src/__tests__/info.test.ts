@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 
-vi.mock('@agentid/sdk', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('@agentid/sdk')>()
+vi.mock('@agentids/sdk', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@agentids/sdk')>()
   return {
     ...actual,
     getAgentReputation: vi.fn(),
@@ -21,7 +21,7 @@ vi.mock('../client.js', () => ({
 }))
 
 import { infoCommand } from '../commands/info.js'
-import { getAgentReputation } from '@agentid/sdk'
+import { getAgentReputation } from '@agentids/sdk'
 
 describe('infoCommand', () => {
   let consoleSpy: ReturnType<typeof vi.spyOn>

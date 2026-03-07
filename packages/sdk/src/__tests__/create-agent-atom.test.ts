@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import type { AgentRegistration } from '@agentid/schema'
+import type { AgentRegistration } from '@agentids/schema'
 import type { AgentIdWriteConfig } from '../config'
 import { createAgentAtom } from '../create-agent-atom'
 

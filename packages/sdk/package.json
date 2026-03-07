@@ -1,5 +1,5 @@
 {
-  "name": "@agentid/sdk",
+  "name": "@agentids/sdk",
   "version": "0.1.0",
   "description": "Core SDK for AgentID — create agents, capabilities, and stake on Intuition Protocol",
   "license": "MIT",
@@ -22,6 +22,9 @@
     "dist",
     "README.md"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "sideEffects": false,
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -40,8 +43,8 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@agentid/schema": "workspace:*",
-    "@agentid/graphql": "workspace:*",
+    "@agentids/schema": "workspace:*",
+    "@agentids/graphql": "workspace:*",
     "viem": "^2.23.0",
     "graphql-request": "^7.1.0",
     "graphql": "^16.9.0"

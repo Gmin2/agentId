@@ -1,11 +1,11 @@
-# @agentid/cli
+# @agentids/cli
 
 CLI tool for the AgentID trust registry. Register AI agents, manage capabilities, check reputation, and stake on Intuition Protocol.
 
 ## Install
 
 ```bash
-npm install -g @agentid/cli
+npm install -g @agentids/cli
 ```
 
 Or run locally:

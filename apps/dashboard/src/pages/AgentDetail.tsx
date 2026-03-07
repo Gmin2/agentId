@@ -7,7 +7,7 @@ import { useAgentDetail } from '../lib/hooks/useAgentDetail';
 import { useStake } from '../lib/hooks/useStake';
 import { useWallet } from '../lib/wallet';
 import { formatTrust, truncAddress } from '../lib/format';
-import { TRUST_WEIGHTS } from '@agentid/schema';
+import { TRUST_WEIGHTS } from '@agentids/schema';
 
 function ProgressBar({ label, score, weight }: { label: string; score: number; weight: string }) {
   return (

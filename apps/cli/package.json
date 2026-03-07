@@ -1,5 +1,5 @@
 {
-  "name": "@agentid/cli",
+  "name": "@agentids/cli",
   "version": "0.1.0",
   "description": "CLI tool for AgentID — register agents, manage capabilities, and check reputation",
   "license": "MIT",
@@ -22,6 +22,9 @@
     "README.md",
     ".env.example"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "type": "module",
   "bin": {
     "agentid": "./dist/index.js"
@@ -36,7 +39,7 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@agentid/sdk": "workspace:*",
+    "@agentids/sdk": "workspace:*",
     "commander": "^12.1.0",
     "@inquirer/prompts": "^7.0.0",
     "chalk": "^5.3.0",

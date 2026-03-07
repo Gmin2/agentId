@@ -5,7 +5,7 @@ import { StatItem, Divider } from '../components/ui/StatItem';
 import { Globe } from '../components/ui/Globe';
 import { FeaturedAgentsAccordion } from '../components/FeaturedAgentsAccordion';
 import { HowItWorksFlow } from '../components/animations/HowItWorksFlow';
-import { SEARCH_AGENTS_BY_NAME, type SearchAgentsByNameResponse } from '@agentid/graphql';
+import { SEARCH_AGENTS_BY_NAME, type SearchAgentsByNameResponse } from '@agentids/graphql';
 import { graphqlClient } from '../lib/graphql';
 
 interface Stats {

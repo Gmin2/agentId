@@ -5,8 +5,8 @@ vi.mock('@inquirer/prompts', () => ({
   select: vi.fn(),
 }))
 
-vi.mock('@agentid/sdk', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('@agentid/sdk')>()
+vi.mock('@agentids/sdk', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@agentids/sdk')>()
   return {
     ...actual,
     createCapabilityTriple: vi.fn().mockResolvedValue({
@@ -33,7 +33,7 @@ vi.mock('../client.js', () => ({
 
 import { capabilityAddCommand } from '../commands/capability-add.js'
 import { input, select } from '@inquirer/prompts'
-import { createCapabilityTriple } from '@agentid/sdk'
+import { createCapabilityTriple } from '@agentids/sdk'
 import { loadEnvConfig } from '../client.js'
 
 describe('capabilityAddCommand', () => {

@@ -1,5 +1,5 @@
 import { toHex, decodeEventLog, type Hex } from 'viem'
-import { AgentRegistrationSchema, type AgentRegistration } from '@agentid/schema'
+import { AgentRegistrationSchema, type AgentRegistration } from '@agentids/schema'
 import { MultiVaultAbi } from './abi'
 import type { AgentIdWriteConfig } from './config'
 import { pinThing, uploadJsonToPinata } from './ipfs'

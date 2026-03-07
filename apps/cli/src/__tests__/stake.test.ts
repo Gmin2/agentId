@@ -5,8 +5,8 @@ vi.mock('@inquirer/prompts', () => ({
   confirm: vi.fn(),
 }))
 
-vi.mock('@agentid/sdk', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('@agentid/sdk')>()
+vi.mock('@agentids/sdk', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@agentids/sdk')>()
   return {
     ...actual,
     stakeOnAgent: vi.fn().mockResolvedValue({
@@ -31,7 +31,7 @@ vi.mock('../client.js', () => ({
 
 import { stakeCommand } from '../commands/stake.js'
 import { input, confirm } from '@inquirer/prompts'
-import { stakeOnAgent } from '@agentid/sdk'
+import { stakeOnAgent } from '@agentids/sdk'
 import { loadEnvConfig } from '../client.js'
 
 describe('stakeCommand', () => {

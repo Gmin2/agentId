@@ -18,7 +18,7 @@ import {
   createCapabilityTriple,
   type AgentRegistration,
   type CapabilityCategory,
-} from '@agentid/sdk'
+} from '@agentids/sdk'
 import { createWriteConfig, loadEnvConfig } from '../client.js'
 
 // ── Agent Definitions ──────────────────────────────────────────────────
