@@ -36,7 +36,7 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@agentid/sdk": "0.1.0",
+    "@agentid/sdk": "workspace:*",
     "commander": "^12.1.0",
     "@inquirer/prompts": "^7.0.0",
     "chalk": "^5.3.0",
