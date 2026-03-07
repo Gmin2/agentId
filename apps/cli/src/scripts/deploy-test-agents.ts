@@ -194,7 +194,10 @@ async function deployAgent(
   console.log(`\n  Uploading ${agentDef.name} to IPFS...`)
   const atomResult = await createAgentAtom(config, registration, INITIAL_STAKE)
   console.log(`  Atom created: ${atomResult.atomId}`)
-  console.log(`  IPFS: ${atomResult.ipfsUri}`)
+  console.log(`  IPFS (pinThing): ${atomResult.ipfsUri}`)
+  if (atomResult.fullRegistrationUri) {
+    console.log(`  IPFS (full reg): ${atomResult.fullRegistrationUri}`)
+  }
   console.log(`  Tx: ${atomResult.txHash}`)
 
   // 2. Create capability triples

@@ -1,0 +1,162 @@
+[
+  {
+    "name": "CodeReviewBot",
+    "atomId": "0x199aa1eaf675cd6cea74a852b20dba63947ad0fdc8436c5b6f7686c57ce95833",
+    "ipfsUri": "ipfs://bafkreiaawguagqj7twk35gobhbhbqm5tgf7d5wdk3a3c5jince5hrli2ky",
+    "txHash": "0xe5c2303667374c1037510b9f5ca57153c69c907924bce4c502e50a15de04e48d",
+    "capabilities": [
+      {
+        "name": "code-generation",
+        "tripleId": "0x3440d93247e54660dbbc5e8b41d9345ae53ded58d337e07a9584064429acc0d8"
+      },
+      {
+        "name": "analysis",
+        "tripleId": "0x5f4ca2d9152b76c3f9bb2d63611afbd434f9b56112aca43c4a863c08780fa879"
+      }
+    ]
+  },
+  {
+    "name": "DataAnalyzer",
+    "atomId": "0x4713d5eba70409829adf1f36576687b0c1b5fb823b26e7fb261b18da976a8944",
+    "ipfsUri": "ipfs://bafkreifrb6s5s4cfgdkkpoz5kn5uioqpwlegyve7i4ibsbgmzov4tlloji",
+    "txHash": "0xee0c42e9303a7ce2d91facdb6931a06462444ec20459a21d40de5f73204a4cfa",
+    "capabilities": [
+      {
+        "name": "data-processing",
+        "tripleId": "0x1c9c7475a554d1e3c9d5ea71a5f0eb804e0b1cff72aea8e3a998e4c7466e0355"
+      },
+      {
+        "name": "analysis",
+        "tripleId": "0xaa1a767d0c8723c4fd7f55bcf377da593c8ad465e9917bb82b2646ac9aa86adc"
+      }
+    ]
+  },
+  {
+    "name": "TweetComposer",
+    "atomId": "0x1b3931d32abeae6c637e9f91980d0ff53e2145706916894fbd8073f76f65903e",
+    "ipfsUri": "ipfs://bafkreid3qqh2tq3iewsd6qc3z5ukjh57ifus7f2bwym6br45yt2ofrexw4",
+    "txHash": "0xc12471372152dfd842197f93a7a5f36ea965d79c3be7f422545ad99aef3d3783",
+    "capabilities": [
+      {
+        "name": "creative",
+        "tripleId": "0x090d7ea230cb8424bc80a9abfef0ee2d5bd94b88a3f4043b7451b97e13f9797b"
+      },
+      {
+        "name": "communication",
+        "tripleId": "0xe57cbe7a97ba812f85aff61e348cc8614d5204771ae892029db077465e99ede3"
+      }
+    ]
+  },
+  {
+    "name": "DeFiSwapper",
+    "atomId": "0x81ecb75013ffac10c93248d71bbb55a7eb221bc876550b0eb04be1067b6d4e6c",
+    "ipfsUri": "ipfs://bafkreiby5qur7aa7mx2ghmjgwchau4krvn6ojt7tk7p7mh4nz67jycvtby",
+    "txHash": "0x853ba94becbdbc62f1fcf4b4903f4015e400b23f2db881df9460589d58e533c1",
+    "capabilities": [
+      {
+        "name": "financial",
+        "tripleId": "0x028ebfb3cccf27fa3a42d79b5c1dc33eb09dd80b2f5aaf053f44a23d157b1681"
+      },
+      {
+        "name": "task-automation",
+        "tripleId": "0x1f19448ecbcea3260a512a735e93622265f3fbf13fbda8277d89fea28ac35296"
+      }
+    ]
+  },
+  {
+    "name": "ResearchAssistant",
+    "atomId": "0x6efa67a11d15917085c90d4861e12ca30ea27805a5fc0da271afee9066d8e9e7",
+    "ipfsUri": "ipfs://bafkreidadhiyw4wrinrdbvx4w3eu43fqtt6rsxhhmbosseuziwmn6kiwy4",
+    "txHash": "0x10c0843df39ca1cb0751b05202c73ee81ba24f9b468c1c670d4d8c5dd9f38344",
+    "capabilities": [
+      {
+        "name": "research",
+        "tripleId": "0xf46545b32e8c062c9561c0a1cd75938ebd2601421d08de4730f1be5815864162"
+      },
+      {
+        "name": "analysis",
+        "tripleId": "0x87b953da496c02c3d69b2d5d4bc40eb0165d31c026977dfb15a2b3b55ce44cc0"
+      }
+    ]
+  },
+  {
+    "name": "SecurityAuditor",
+    "atomId": "0xe13649cf4dfd231995ffba8c3419b8e7a1a84f691ec872e294a18601de3cb553",
+    "ipfsUri": "ipfs://bafkreic46lhcewb6uiludorba7722nolhvvq4imv36ja6ttcztryvrsmmq",
+    "txHash": "0x10df035bd8e81045e654e2ad2036d5dc22e351665b3b848cf484df7ad58dbead",
+    "capabilities": [
+      {
+        "name": "security",
+        "tripleId": "0xb680213aa5fa13c663ebd1b5084c581abcf3451a3da7c569b92b6381ab4acdc4"
+      },
+      {
+        "name": "code-generation",
+        "tripleId": "0x7cf5b2f73a3ed1a6ac3a8658aaf665ac4618b5ed149f6435a362d93f4b2fe35c"
+      }
+    ]
+  },
+  {
+    "name": "DocWriter",
+    "atomId": "0x6df834c706d52e1d70543a4c8929e5b08d1fcbbd9857a3191b9143feaaf07c06",
+    "ipfsUri": "ipfs://bafkreicgkswx2jprknhl3k47d2cbka2ct4jwz2wclh3dy36sw3l47hrsza",
+    "txHash": "0xc6a81d2e0392ea5bddde04e08471c0f1d761b5b66677c99f661bda47f3f23714",
+    "capabilities": [
+      {
+        "name": "creative",
+        "tripleId": "0x7341554628454f1bb3c8a33ab8c471542e1cd2fc030032456e6b2f288f55a293"
+      },
+      {
+        "name": "communication",
+        "tripleId": "0xde57bace9ae13cfcaa3366e8d33e418b835f2afb0e1161f76c1fadddcca38f27"
+      }
+    ]
+  },
+  {
+    "name": "InfraMonitor",
+    "atomId": "0x751225e6bfef36796319120a7bdde6ed29b3697a80f5923fe7242d30e1c9b547",
+    "ipfsUri": "ipfs://bafkreiblbfiduoxwbsd2kfkktirikzb2vgz5addudrisqd2uzrxxcdlh2e",
+    "txHash": "0x5bc67d9636ea20f8ebb66950402ab8d9ce2ae7fe5077f0d6c4b1867d419c80d4",
+    "capabilities": [
+      {
+        "name": "infrastructure",
+        "tripleId": "0x7ed5ebdbb538b91529805f7ebcaac8f1ec67b15471c1b933e07dd2ccb77528bf"
+      },
+      {
+        "name": "analysis",
+        "tripleId": "0x3ac86fd4ea8a3acf3be3c64e695a8cd07462c2722784e765bb4dc03a446e7a02"
+      }
+    ]
+  },
+  {
+    "name": "TranslationAgent",
+    "atomId": "0xec1db09e352a717b676e38b44e30b9f33c597cd596a92034725ce981d98d6dcc",
+    "ipfsUri": "ipfs://bafkreihrc6reoz4krbdw6rr3xqt4skx6nmmg76gq6pp3od67hqlunb7ige",
+    "txHash": "0xd66ef3e3afe7b977533bc734a20976538e536d56c611a7db8adc2e71ef9bac78",
+    "capabilities": [
+      {
+        "name": "communication",
+        "tripleId": "0x52e39ae1893ca3a9bf53098836e540beb0d9bf9b6facfb4fefbdb4d635a72479"
+      },
+      {
+        "name": "creative",
+        "tripleId": "0x5a9d9d314ee6067333d16bd536549640d26f6f536f3f27614d8859f9b55588ff"
+      }
+    ]
+  },
+  {
+    "name": "TaskOrchestrator",
+    "atomId": "0x9c9fb376f01edb86f5eb5faaca5e5261cc5b39aed05ed56e5b9db429e7f025b8",
+    "ipfsUri": "ipfs://bafkreievravyifbbri4kfdn2mj7fweojxcavvghrug2tor4m5uuvjwlkhm",
+    "txHash": "0x62d200b11cc040d3084123ee8c7f01afc1cc1be778d6b29d1da63ebc64d9f8d6",
+    "capabilities": [
+      {
+        "name": "task-automation",
+        "tripleId": "0x9f8b45f6842fc2c44d4b10b32adcc538523946593c759d936e78a304ede79056"
+      },
+      {
+        "name": "infrastructure",
+        "tripleId": "0x0fe35f75dc52a52c293add83143c9bfe4041a81c70559bb34d94f8e3854c4a9e"
+      }
+    ]
+  }
+]

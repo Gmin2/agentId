@@ -85,6 +85,7 @@ export function createWriteConfig(
     walletClient,
     publicClient,
     graphqlClient,
+    graphqlUrl: net.graphqlUrl,
     pinataApiJwt,
   }
 }
