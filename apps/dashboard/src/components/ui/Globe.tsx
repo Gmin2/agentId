@@ -135,14 +135,10 @@ export function Globe() {
         </circle>
       </svg>
 
-      {/* Corner stats */}
+      {/* Corner label */}
       <div className="absolute bottom-4 left-4 flex flex-col gap-1">
-        <div className="text-accent text-[8px] tracking-[0.3em] uppercase">AGENTS ONLINE</div>
-        <div className="text-fg text-sm font-light">1,248</div>
-      </div>
-      <div className="absolute bottom-4 right-4 flex flex-col gap-1 text-right">
-        <div className="text-fg-dim text-[8px] tracking-[0.3em] uppercase">TRUST QUERIES</div>
-        <div className="text-fg text-sm font-light">24.5k<span className="text-fg-dim text-[10px]">/hr</span></div>
+        <div className="text-accent text-[8px] tracking-[0.3em] uppercase">INTUITION TESTNET</div>
+        <div className="text-fg-dim text-[10px] font-mono">Chain 13579</div>
       </div>
     </div>
   );

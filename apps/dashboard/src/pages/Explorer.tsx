@@ -1,47 +1,33 @@
 import { useState } from 'preact/hooks';
 import { Link } from 'react-router-dom';
-import { AreaChart, Area, ResponsiveContainer } from 'recharts';
 import { Panel } from '../components/ui/Panel';
 import { AgentAvatar } from '../components/ui/AgentAvatar';
 import { cn } from '../lib/utils';
+import { useAgents, type AgentListItem } from '../lib/hooks/useAgents';
+import { formatTrust, truncAddress } from '../lib/format';
+import { calculateTrustScore, type TrustScoreInput } from '@agentid/schema';
 
 const CATEGORIES = [
   'data-processing', 'code-generation', 'task-automation', 'communication',
   'analysis', 'creative', 'financial', 'research', 'security', 'infrastructure'
 ];
 
-const TIER_ORDER = { ELITE: 0, HIGH: 1, MEDIUM: 2, LOW: 3 } as const;
-
-const MOCK_AGENTS = [
-  { id: '0xa1b2c3d4', name: 'CodeReviewer', staked: '12,450', stakersCount: 342, tier: 'ELITE', category: 'code-generation', description: 'Smart contract auditing & vulnerability detection', sparkline: [65, 72, 68, 80, 85, 78, 90, 95, 88, 92] },
-  { id: '0xd4e5f6a7', name: 'DataAnalyzer', staked: '8,210', stakersCount: 215, tier: 'HIGH', category: 'analysis', description: 'On-chain data analysis & pattern recognition', sparkline: [40, 45, 55, 60, 58, 65, 70, 68, 75, 72] },
-  { id: '0xb8c9d0e1', name: 'SecurityBot', staked: '6,100', stakersCount: 189, tier: 'HIGH', category: 'security', description: 'Real-time threat monitoring & incident response', sparkline: [30, 35, 42, 38, 50, 55, 48, 60, 58, 65] },
-  { id: '0xf2a3b4c5', name: 'DeFiTrader', staked: '4,500', stakersCount: 120, tier: 'MEDIUM', category: 'financial', description: 'Automated DeFi strategy execution', sparkline: [20, 35, 28, 45, 40, 55, 50, 42, 60, 48] },
-  { id: '0xe6f7a8b9', name: 'ResearchAsst', staked: '3,200', stakersCount: 95, tier: 'MEDIUM', category: 'research', description: 'Academic paper analysis & knowledge synthesis', sparkline: [15, 20, 25, 30, 28, 35, 40, 38, 42, 45] },
-  { id: '0xc0d1e2f3', name: 'TaskRouter', staked: '5,800', stakersCount: 178, tier: 'HIGH', category: 'task-automation', description: 'Intelligent task delegation & orchestration', sparkline: [50, 55, 48, 62, 58, 70, 65, 75, 72, 80] },
-  { id: '0xa4b5c6d7', name: 'ChatBridge', staked: '2,900', stakersCount: 88, tier: 'MEDIUM', category: 'communication', description: 'Cross-platform communication & translation', sparkline: [25, 30, 28, 35, 40, 38, 45, 42, 50, 48] },
-  { id: '0xd8e9f0a1', name: 'CreativeGen', staked: '1,800', stakersCount: 67, tier: 'LOW', category: 'creative', description: 'Generative art & content creation', sparkline: [10, 15, 12, 18, 20, 16, 22, 25, 20, 28] },
-  { id: '0xb2c3d4e5', name: 'InfraWatch', staked: '7,300', stakersCount: 201, tier: 'HIGH', category: 'infrastructure', description: 'Infrastructure monitoring & auto-scaling', sparkline: [45, 50, 55, 52, 60, 65, 58, 70, 68, 75] },
-  { id: '0xf6a7b8c9', name: 'DataPipe', staked: '3,600', stakersCount: 102, tier: 'MEDIUM', category: 'data-processing', description: 'Real-time data pipeline management', sparkline: [18, 22, 28, 25, 32, 35, 30, 40, 38, 42] },
-  { id: '0xe0f1a2b3', name: 'AuditPro', staked: '9,100', stakersCount: 256, tier: 'ELITE', category: 'security', description: 'Comprehensive protocol audit automation', sparkline: [55, 60, 65, 70, 68, 75, 80, 78, 85, 88] },
-  { id: '0xc4d5e6f7', name: 'YieldBot', staked: '2,100', stakersCount: 74, tier: 'LOW', category: 'financial', description: 'Yield farming optimization & rebalancing', sparkline: [8, 12, 10, 15, 18, 14, 20, 22, 18, 25] },
-].map(a => ({ ...a, sparkline: a.sparkline.map(v => ({ value: v })) }));
-
-const networkActivity = Array.from({ length: 30 }, (_, i) => ({
-  time: i,
-  volume: Math.sin(i * 0.3) * 300 + 700 + Math.sin(i * 0.7) * 150
-}));
-
-function Sparkline({ data, color }: { data: { value: number }[], color: string }) {
-  return (
-    <div className="h-8 w-24">
-      <ResponsiveContainer width="100%" height="100%">
-        <AreaChart data={data}>
-          <Area type="monotone" dataKey="value" stroke={color} strokeWidth={1.5} fill={color} fillOpacity={0.1} isAnimationActive={false} />
-        </AreaChart>
-      </ResponsiveContainer>
-    </div>
-  );
+function getAgentTier(agent: AgentListItem): string {
+  const input: TrustScoreInput = {
+    totalStaked: BigInt(agent.totalStaked || '0'),
+    stakerCount: agent.stakersCount,
+    sharePrice: BigInt(agent.sharePrice || '1000000000000000000'),
+    forStake: BigInt(agent.totalStaked || '0'),
+    againstStake: 0n,
+    operatorStake: 0n,
+    ageInDays: agent.createdAt
+      ? Math.floor((Date.now() - new Date(agent.createdAt).getTime()) / (1000 * 60 * 60 * 24))
+      : 0,
+    feedbackCount: 0,
+    averageFeedbackScore: 0,
+  };
+  const score = calculateTrustScore(input);
+  return score.tier.toUpperCase();
 }
 
 function TierBadge({ tier }: { tier: string }) {
@@ -59,8 +45,26 @@ function TierBadge({ tier }: { tier: string }) {
   );
 }
 
-function tierColor(tier: string) {
-  return tier === 'ELITE' ? '#f97316' : tier === 'HIGH' ? '#10b981' : tier === 'MEDIUM' ? '#60a5fa' : '#555';
+function SkeletonCard() {
+  return (
+    <Panel className="h-[220px] animate-pulse">
+      <div className="p-6 flex flex-col gap-4">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-raised rounded" />
+          <div className="flex-1">
+            <div className="h-4 bg-raised rounded w-24 mb-2" />
+            <div className="h-3 bg-raised rounded w-16" />
+          </div>
+        </div>
+        <div className="h-3 bg-raised rounded w-full" />
+        <div className="h-3 bg-raised rounded w-3/4" />
+        <div className="mt-auto flex justify-between">
+          <div className="h-6 bg-raised rounded w-20" />
+          <div className="h-6 bg-raised rounded w-12" />
+        </div>
+      </div>
+    </Panel>
+  );
 }
 
 export function Explorer() {
@@ -68,42 +72,16 @@ export function Explorer() {
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
   const [view, setView] = useState<'grid' | 'list'>('grid');
 
+  const { agents, loading, error } = useAgents(search, activeFilters);
+
   const toggleFilter = (cat: string) => {
     setActiveFilters(prev =>
       prev.includes(cat) ? prev.filter(c => c !== cat) : [...prev, cat]
     );
   };
 
-  const filteredAgents = MOCK_AGENTS
-    .filter(agent => {
-      const matchesSearch = agent.name.toLowerCase().includes(search.toLowerCase()) || agent.description.toLowerCase().includes(search.toLowerCase());
-      const matchesFilter = activeFilters.length === 0 || activeFilters.includes(agent.category);
-      return matchesSearch && matchesFilter;
-    })
-    .sort((a, b) => (TIER_ORDER[a.tier as keyof typeof TIER_ORDER] ?? 3) - (TIER_ORDER[b.tier as keyof typeof TIER_ORDER] ?? 3));
-
   return (
     <div className="flex flex-col gap-6">
-      {/* Network Activity Banner */}
-      <Panel className="p-0 overflow-hidden h-32 relative flex items-center justify-between border-accent/30">
-        <div className="absolute inset-0 bg-gradient-to-r from-base via-transparent to-base z-10 pointer-events-none" />
-        <div className="absolute inset-0 opacity-30">
-          <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={networkActivity}>
-              <Area type="monotone" dataKey="volume" stroke="#f97316" strokeWidth={1} fill="#f97316" fillOpacity={0.1} />
-            </AreaChart>
-          </ResponsiveContainer>
-        </div>
-        <div className="relative z-20 px-8 flex flex-col gap-1">
-          <span className="text-accent text-[10px] tracking-[0.3em] uppercase">NETWORK ACTIVITY</span>
-          <span className="text-fg text-2xl font-light">24.5k <span className="text-fg-dim text-sm">TX/s</span></span>
-        </div>
-        <div className="relative z-20 px-8 text-right flex flex-col gap-1">
-          <span className="text-fg-dim text-[10px] tracking-[0.3em] uppercase">GLOBAL STAKE</span>
-          <span className="text-fg text-2xl font-light">1.2M <span className="text-fg-dim text-sm">tTRUST</span></span>
-        </div>
-      </Panel>
-
       {/* Search & Filters */}
       <Panel className="flex flex-col gap-6 p-8">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -141,24 +119,20 @@ export function Explorer() {
         </div>
 
         <div className="flex flex-wrap gap-2 pt-4 border-t border-stroke">
-          {CATEGORIES.map(cat => {
-            const count = MOCK_AGENTS.filter(a => a.category === cat).length;
-            return (
-              <button
-                key={cat}
-                onClick={() => toggleFilter(cat)}
-                className={cn(
-                  "text-[10px] tracking-[0.1em] px-3 py-1 border transition-all flex items-center gap-2",
-                  activeFilters.includes(cat)
-                    ? "border-accent text-accent bg-accent/10 shadow-[0_0_10px_rgba(249,115,22,0.2)]"
-                    : "border-stroke-2 text-fg-muted hover:border-stroke-3 hover:text-fg-soft bg-surface"
-                )}
-              >
-                {cat}
-                <span className={cn("text-[8px]", activeFilters.includes(cat) ? "text-accent/60" : "text-fg-dim")}>{count}</span>
-              </button>
-            );
-          })}
+          {CATEGORIES.map(cat => (
+            <button
+              key={cat}
+              onClick={() => toggleFilter(cat)}
+              className={cn(
+                "text-[10px] tracking-[0.1em] px-3 py-1 border transition-all flex items-center gap-2",
+                activeFilters.includes(cat)
+                  ? "border-accent text-accent bg-accent/10 shadow-[0_0_10px_rgba(249,115,22,0.2)]"
+                  : "border-stroke-2 text-fg-muted hover:border-stroke-3 hover:text-fg-soft bg-surface"
+              )}
+            >
+              {cat}
+            </button>
+          ))}
           {activeFilters.length > 0 && (
             <button
               onClick={() => setActiveFilters([])}
@@ -170,129 +144,111 @@ export function Explorer() {
         </div>
 
         <div className="flex justify-between items-center pt-4 text-[10px] tracking-[0.2em] uppercase text-fg-dim">
-          <span>{filteredAgents.length} RESULTS</span>
-          <select className="bg-transparent border-none outline-none text-fg-muted cursor-pointer hover:text-fg-soft transition-colors">
-            <option>MOST STAKED</option>
-            <option>MOST STAKERS</option>
-            <option>NEWEST</option>
-          </select>
+          <span>
+            {loading ? 'Loading...' : `${agents.length} RESULTS`}
+          </span>
+          {error && <span className="text-red-400">{error}</span>}
         </div>
       </Panel>
 
-      {/* Agent Cards - Grid View */}
-      {view === 'grid' ? (
+      {/* Loading state */}
+      {loading && (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-          {filteredAgents.length > 0 ? (
-            filteredAgents.map((agent) => (
-              <Link key={agent.id} to={`/agents/${agent.id}`}>
-                <Panel className="relative overflow-hidden hover:border-accent/50 hover:shadow-[0_0_30px_rgba(249,115,22,0.1)] transition-all duration-500 cursor-pointer group h-full flex flex-col justify-between bg-surface">
-                  {/* Decorative background letter */}
-                  <div className="absolute -right-4 -bottom-8 text-[120px] font-serif italic text-raised group-hover:text-[#1a1a1a] transition-colors duration-500 select-none pointer-events-none z-0 leading-none">
-                    {agent.name.charAt(0)}
-                  </div>
+          {Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)}
+        </div>
+      )}
 
-                  {/* Top accent line on hover */}
-                  <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-accent to-transparent opacity-0 group-hover:opacity-50 transition-opacity duration-500" />
+      {/* Agent Cards - Grid View */}
+      {!loading && view === 'grid' && (
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+          {agents.length > 0 ? (
+            agents.map((agent) => {
+              const tier = getAgentTier(agent);
+              return (
+                <Link key={agent.atomId} to={`/agents/${agent.atomId}`}>
+                  <Panel className="relative overflow-hidden hover:border-accent/50 hover:shadow-[0_0_30px_rgba(249,115,22,0.1)] transition-all duration-500 cursor-pointer group h-full flex flex-col justify-between bg-surface">
+                    <div className="absolute -right-4 -bottom-8 text-[120px] font-serif italic text-raised group-hover:text-[#1a1a1a] transition-colors duration-500 select-none pointer-events-none z-0 leading-none">
+                      {agent.name.charAt(0)}
+                    </div>
+                    <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-accent to-transparent opacity-0 group-hover:opacity-50 transition-opacity duration-500" />
 
-                  <div className="absolute inset-0 bg-gradient-to-br from-accent/0 via-transparent to-accent/0 group-hover:from-accent/5 group-hover:to-transparent transition-all duration-500 z-0" />
-
-                  <div className="relative z-10">
-                    <div className="flex justify-between items-start mb-4">
-                      <div className="flex items-center gap-3">
-                        <AgentAvatar name={agent.name} size="md" />
-                        <div>
-                          <div className="text-fg font-medium group-hover:text-accent transition-colors">{agent.name}</div>
-                          <div className="text-fg-dim text-[10px] tracking-widest font-mono">{agent.id}...</div>
+                    <div className="relative z-10">
+                      <div className="flex justify-between items-start mb-4">
+                        <div className="flex items-center gap-3">
+                          <AgentAvatar name={agent.name} size="md" />
+                          <div>
+                            <div className="text-fg font-medium group-hover:text-accent transition-colors">{agent.name}</div>
+                            <div className="text-fg-dim text-[10px] tracking-widest font-mono">{truncAddress(agent.atomId)}</div>
+                          </div>
                         </div>
-                      </div>
-                      <TierBadge tier={agent.tier} />
-                    </div>
-
-                    {/* Description */}
-                    <p className="text-fg-muted text-xs leading-relaxed mb-4 line-clamp-2">{agent.description}</p>
-
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-[8px] tracking-[0.2em] px-2 py-1 border border-stroke-2 text-fg-muted bg-raised group-hover:border-stroke-3 transition-colors">
-                        {agent.category}
-                      </span>
-                      <div className="opacity-50 group-hover:opacity-100 transition-opacity duration-500">
-                        <Sparkline data={agent.sparkline} color={tierColor(agent.tier)} />
+                        <TierBadge tier={tier} />
                       </div>
                     </div>
-                  </div>
 
-                  <div className="relative z-10 flex justify-between items-end border-t border-stroke group-hover:border-stroke-2 pt-4 mt-2 transition-colors duration-500">
-                    <div>
-                      <div className="text-fg-dim text-[8px] tracking-[0.2em] uppercase mb-1">Total Staked</div>
-                      <div className="text-fg-soft text-lg font-light group-hover:text-white transition-colors">{agent.staked} <span className="text-fg-dim text-[10px]">tTRUST</span></div>
+                    <div className="relative z-10 flex justify-between items-end border-t border-stroke group-hover:border-stroke-2 pt-4 mt-2 transition-colors duration-500">
+                      <div>
+                        <div className="text-fg-dim text-[8px] tracking-[0.2em] uppercase mb-1">Total Staked</div>
+                        <div className="text-fg-soft text-lg font-light group-hover:text-white transition-colors">{formatTrust(agent.totalStaked)} <span className="text-fg-dim text-[10px]">tTRUST</span></div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-fg-dim text-[8px] tracking-[0.2em] uppercase mb-1">Stakers</div>
+                        <div className="text-fg-muted text-sm">{agent.stakersCount}</div>
+                      </div>
                     </div>
-                    <div className="text-right">
-                      <div className="text-fg-dim text-[8px] tracking-[0.2em] uppercase mb-1">Stakers</div>
-                      <div className="text-fg-muted text-sm">{agent.stakersCount}</div>
-                    </div>
-                  </div>
-                </Panel>
-              </Link>
-            ))
+                  </Panel>
+                </Link>
+              );
+            })
           ) : (
             <div className="col-span-full py-20 text-center text-fg-dim text-sm tracking-widest uppercase">
-              No agents found matching "{search}"
-            </div>
-          )}
-        </div>
-      ) : (
-        /* List View */
-        <div className="flex flex-col gap-2">
-          {/* Header */}
-          <div className="flex items-center px-6 py-3 text-[8px] tracking-[0.2em] uppercase text-fg-dim">
-            <div className="w-2/5">AGENT</div>
-            <div className="w-1/5 text-center">TIER</div>
-            <div className="w-1/5 text-right">STAKED</div>
-            <div className="w-1/5 text-right">TREND</div>
-          </div>
-
-          {filteredAgents.length > 0 ? (
-            filteredAgents.map((agent) => (
-              <Link key={agent.id} to={`/agents/${agent.id}`}>
-                <div className="relative overflow-hidden flex items-center px-6 py-4 border border-stroke bg-surface hover:border-accent/50 hover:shadow-[0_0_15px_rgba(249,115,22,0.1)] transition-all duration-500 group">
-                  <div className="absolute inset-0 bg-gradient-to-r from-accent/0 via-transparent to-accent/0 group-hover:from-accent/5 group-hover:to-transparent transition-all duration-500 z-0 pointer-events-none" />
-
-                  <div className="relative z-10 flex items-center gap-4 w-2/5">
-                    <AgentAvatar name={agent.name} size="sm" />
-                    <div className="min-w-0">
-                      <div className="text-fg font-medium group-hover:text-accent transition-colors truncate">{agent.name}</div>
-                      <div className="text-fg-dim text-[10px] tracking-widest font-mono truncate">{agent.id} · {agent.category}</div>
-                    </div>
-                  </div>
-
-                  <div className="relative z-10 w-1/5 flex justify-center">
-                    <TierBadge tier={agent.tier} />
-                  </div>
-
-                  <div className="relative z-10 w-1/5 text-right">
-                    <div className="text-fg-soft text-sm font-medium group-hover:text-white transition-colors">{agent.staked}</div>
-                    <div className="text-fg-dim text-[10px]">{agent.stakersCount} stakers</div>
-                  </div>
-
-                  <div className="relative z-10 w-1/5 flex justify-end">
-                    <Sparkline data={agent.sparkline} color={tierColor(agent.tier)} />
-                  </div>
-                </div>
-              </Link>
-            ))
-          ) : (
-            <div className="py-20 text-center text-fg-dim text-sm tracking-widest uppercase">
-              No agents found matching "{search}"
+              {search ? `No agents found matching "${search}"` : 'No agents registered yet'}
             </div>
           )}
         </div>
       )}
 
-      {filteredAgents.length > 0 && (
-        <div className="flex justify-center mt-8">
-          <button className="text-[10px] tracking-[0.2em] uppercase px-6 py-3 border border-stroke-2 text-fg-muted hover:border-accent hover:text-accent hover:bg-accent/10 transition-all">
-            Load More
-          </button>
+      {/* List View */}
+      {!loading && view === 'list' && (
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center px-6 py-3 text-[8px] tracking-[0.2em] uppercase text-fg-dim">
+            <div className="w-2/5">AGENT</div>
+            <div className="w-1/5 text-center">TIER</div>
+            <div className="w-1/5 text-right">STAKED</div>
+            <div className="w-1/5 text-right">STAKERS</div>
+          </div>
+
+          {agents.length > 0 ? (
+            agents.map((agent) => {
+              const tier = getAgentTier(agent);
+              return (
+                <Link key={agent.atomId} to={`/agents/${agent.atomId}`}>
+                  <div className="relative overflow-hidden flex items-center px-6 py-4 border border-stroke bg-surface hover:border-accent/50 hover:shadow-[0_0_15px_rgba(249,115,22,0.1)] transition-all duration-500 group">
+                    <div className="relative z-10 flex items-center gap-4 w-2/5">
+                      <AgentAvatar name={agent.name} size="sm" />
+                      <div className="min-w-0">
+                        <div className="text-fg font-medium group-hover:text-accent transition-colors truncate">{agent.name}</div>
+                        <div className="text-fg-dim text-[10px] tracking-widest font-mono truncate">{truncAddress(agent.atomId)}</div>
+                      </div>
+                    </div>
+                    <div className="relative z-10 w-1/5 flex justify-center">
+                      <TierBadge tier={tier} />
+                    </div>
+                    <div className="relative z-10 w-1/5 text-right">
+                      <div className="text-fg-soft text-sm font-medium group-hover:text-white transition-colors">{formatTrust(agent.totalStaked)}</div>
+                      <div className="text-fg-dim text-[10px]">tTRUST</div>
+                    </div>
+                    <div className="relative z-10 w-1/5 text-right">
+                      <div className="text-fg-muted text-sm">{agent.stakersCount}</div>
+                    </div>
+                  </div>
+                </Link>
+              );
+            })
+          ) : (
+            <div className="py-20 text-center text-fg-dim text-sm tracking-widest uppercase">
+              {search ? `No agents found matching "${search}"` : 'No agents registered yet'}
+            </div>
+          )}
         </div>
       )}
     </div>

@@ -1,9 +1,12 @@
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '../lib/utils';
 import { Logo } from './Logo';
+import { useWallet } from '../lib/wallet';
+import { truncAddress } from '../lib/format';
 
 export function Navbar() {
   const location = useLocation();
+  const { address, isConnecting, connect, disconnect } = useWallet();
 
   const navItem = (path: string, label: string) => {
     const isActive = location.pathname === path || (path !== '/' && location.pathname.startsWith(path));
@@ -34,9 +37,23 @@ export function Navbar() {
         {navItem('/dashboard', 'Dashboard')}
       </div>
       <div>
-        <button className="text-[10px] tracking-[0.2em] uppercase px-4 py-2 border border-accent/50 text-accent hover:bg-accent/10 transition-colors">
-          Connect Wallet
-        </button>
+        {address ? (
+          <button
+            onClick={disconnect}
+            className="text-[10px] tracking-[0.2em] uppercase px-4 py-2 border border-emerald-500/50 text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/20 transition-colors flex items-center gap-2"
+          >
+            <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full shadow-[0_0_6px_rgba(16,185,129,0.8)]" />
+            {truncAddress(address)}
+          </button>
+        ) : (
+          <button
+            onClick={connect}
+            disabled={isConnecting}
+            className="text-[10px] tracking-[0.2em] uppercase px-4 py-2 border border-accent/50 text-accent hover:bg-accent/10 transition-colors disabled:opacity-50"
+          >
+            {isConnecting ? 'Connecting...' : 'Connect Wallet'}
+          </button>
+        )}
       </div>
     </nav>
   );

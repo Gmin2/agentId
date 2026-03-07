@@ -1,11 +1,56 @@
+import { useState, useEffect } from 'preact/hooks';
 import { Link } from 'react-router-dom';
 import { Panel } from '../components/ui/Panel';
 import { StatItem, Divider } from '../components/ui/StatItem';
 import { Globe } from '../components/ui/Globe';
 import { FeaturedAgentsAccordion } from '../components/FeaturedAgentsAccordion';
 import { HowItWorksFlow } from '../components/animations/HowItWorksFlow';
+import { SEARCH_AGENTS_BY_NAME, type SearchAgentsByNameResponse } from '@agentid/graphql';
+import { graphqlClient } from '../lib/graphql';
+
+interface Stats {
+  totalAgents: string
+  totalStaked: string
+  totalStakers: string
+}
 
 export function Landing() {
+  const [stats, setStats] = useState<Stats>({ totalAgents: '...', totalStaked: '...', totalStakers: '...' });
+
+  useEffect(() => {
+    async function fetchStats() {
+      try {
+        const res = await graphqlClient.request<SearchAgentsByNameResponse>(
+          SEARCH_AGENTS_BY_NAME,
+          { name: '%', limit: 100 }
+        );
+        // Filter out unlabeled atoms
+        const agents = res.atoms.filter(a => a.label && a.label !== 'json object');
+        let totalStaked = 0n;
+        let totalStakers = 0;
+
+        for (const atom of agents) {
+          const vault = atom.term?.vaults?.[0];
+          if (vault) {
+            totalStaked += BigInt(vault.total_assets || '0');
+            totalStakers += vault.position_count || 0;
+          }
+        }
+
+        const stakedNum = Number(totalStaked) / 1e18;
+        setStats({
+          totalAgents: agents.length.toString(),
+          totalStaked: stakedNum < 1000 ? stakedNum.toFixed(2) : `${(stakedNum / 1000).toFixed(1)}k`,
+          totalStakers: totalStakers.toString(),
+        });
+      } catch {
+        setStats({ totalAgents: '—', totalStaked: '—', totalStakers: '—' });
+      }
+    }
+
+    fetchStats();
+  }, []);
+
   return (
     <div className="flex flex-col gap-6">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-[500px]">
@@ -39,11 +84,11 @@ export function Landing() {
       </div>
 
       <Panel className="flex flex-col md:flex-row justify-between items-center py-8 px-12 border-stroke-2">
-        <StatItem label="TOTAL AGENTS" value="1,248" />
+        <StatItem label="TOTAL AGENTS" value={stats.totalAgents} />
         <Divider />
-        <StatItem label="TOTAL tTRUST STAKED" value="84.5k" />
+        <StatItem label="TOTAL tTRUST STAKED" value={stats.totalStaked} />
         <Divider />
-        <StatItem label="TOTAL STAKERS" value="3,912" />
+        <StatItem label="TOTAL STAKERS" value={stats.totalStakers} />
       </Panel>
 
       <div className="flex flex-col gap-4 mt-8">
@@ -52,7 +97,7 @@ export function Landing() {
             <div className="w-2 h-2 bg-accent shadow-[0_0_10px_rgba(249,115,22,0.8)]" />
             FEATURED AGENTS
           </h2>
-          <Link to="/agents" className="text-accent text-[10px] tracking-[0.2em] uppercase hover:underline">View All →</Link>
+          <Link to="/agents" className="text-accent text-[10px] tracking-[0.2em] uppercase hover:underline">View All</Link>
         </div>
         <FeaturedAgentsAccordion />
       </div>
