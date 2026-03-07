@@ -80,19 +80,22 @@ export const MultiVaultAbi = [
     inputs: [
       { name: 'creator', type: 'address', indexed: true, internalType: 'address' },
       { name: 'termId', type: 'bytes32', indexed: true, internalType: 'bytes32' },
-      { name: 'data', type: 'bytes', indexed: false, internalType: 'bytes' },
+      { name: 'atomData', type: 'bytes', indexed: false, internalType: 'bytes' },
+      { name: 'atomWallet', type: 'address', indexed: false, internalType: 'address' },
     ],
+    anonymous: false,
   },
   {
     type: 'event',
     name: 'TripleCreated',
     inputs: [
       { name: 'creator', type: 'address', indexed: true, internalType: 'address' },
-      { name: 'tripleId', type: 'bytes32', indexed: true, internalType: 'bytes32' },
+      { name: 'termId', type: 'bytes32', indexed: true, internalType: 'bytes32' },
       { name: 'subjectId', type: 'bytes32', indexed: false, internalType: 'bytes32' },
       { name: 'predicateId', type: 'bytes32', indexed: false, internalType: 'bytes32' },
       { name: 'objectId', type: 'bytes32', indexed: false, internalType: 'bytes32' },
     ],
+    anonymous: false,
   },
   {
     type: 'event',
@@ -103,7 +106,11 @@ export const MultiVaultAbi = [
       { name: 'termId', type: 'bytes32', indexed: true, internalType: 'bytes32' },
       { name: 'curveId', type: 'uint256', indexed: false, internalType: 'uint256' },
       { name: 'assets', type: 'uint256', indexed: false, internalType: 'uint256' },
+      { name: 'assetsAfterFees', type: 'uint256', indexed: false, internalType: 'uint256' },
       { name: 'shares', type: 'uint256', indexed: false, internalType: 'uint256' },
+      { name: 'totalShares', type: 'uint256', indexed: false, internalType: 'uint256' },
+      { name: 'vaultType', type: 'uint8', indexed: false, internalType: 'enum VaultType' },
     ],
+    anonymous: false,
   },
 ] as const

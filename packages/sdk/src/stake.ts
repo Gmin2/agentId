@@ -1,4 +1,4 @@
-import type { Hex } from 'viem'
+import { decodeEventLog, type Hex } from 'viem'
 import { MultiVaultAbi } from './abi'
 import type { AgentIdWriteConfig } from './config'
 
@@ -100,18 +100,18 @@ export async function counterSignalTriple(
 
 /** Extract shares from Deposited event logs. */
 function parseDepositedShares(logs: readonly { data: Hex; topics: readonly Hex[] }[]): bigint {
-  // The Deposited event has shares as the last indexed data field
-  // For simplicity, we return 0n if we can't parse
-  // In production, use decodeEventLog
   for (const log of logs) {
-    if (log.topics.length >= 3 && log.data.length >= 130) {
-      // shares is the third uint256 in data (after curveId and assets)
-      const sharesHex = `0x${log.data.slice(130, 194)}` as Hex
-      try {
-        return BigInt(sharesHex)
-      } catch {
-        continue
+    try {
+      const decoded = decodeEventLog({
+        abi: MultiVaultAbi,
+        data: log.data,
+        topics: log.topics as [Hex, ...Hex[]],
+      })
+      if (decoded.eventName === 'Deposited') {
+        return (decoded.args as { shares: bigint }).shares
       }
+    } catch {
+      continue
     }
   }
   return 0n

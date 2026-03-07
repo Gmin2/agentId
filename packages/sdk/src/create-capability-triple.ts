@@ -157,7 +157,7 @@ export async function createCapabilityTriple(
     topics: tripleLog.topics,
   })
 
-  const tripleId = (decoded.args as { tripleId: Hex }).tripleId
+  const tripleId = (decoded.args as { termId: Hex }).termId
 
   return { tripleId, predicateAtomId, capabilityAtomId, txHash }
 }

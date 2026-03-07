@@ -11,7 +11,9 @@ export interface AgentIdWriteConfig {
   publicClient: PublicClient
   /** GraphQL client for querying Intuition */
   graphqlClient: GraphQLClient
-  /** Pinata JWT for IPFS uploads */
+  /** Intuition GraphQL endpoint URL (for pinThing mutation) */
+  graphqlUrl: string
+  /** Pinata JWT for IPFS uploads (optional, used for full registration JSON) */
   pinataApiJwt: string
 }
 
@@ -25,13 +27,13 @@ export const INTUITION_NETWORKS = {
   testnet: {
     chainId: 13579,
     rpcUrl: 'https://testnet.rpc.intuition.systems',
-    multiVaultAddress: '0x6E35cF57A41fA15eA0EaE9C33e751b01A784Fe7e' as Address,
+    multiVaultAddress: '0x2Ece8D4dEdcB9918A398528f3fa4688b1d2CAB91' as Address,
     graphqlUrl: 'https://testnet.intuition.sh/v1/graphql',
   },
   mainnet: {
-    chainId: 8453,
-    rpcUrl: 'https://mainnet.rpc.intuition.systems',
-    multiVaultAddress: '0x430BbF52503Bd4801E51182f4cB9f8F534225DE5' as Address,
+    chainId: 1155,
+    rpcUrl: 'https://rpc.intuition.systems',
+    multiVaultAddress: '0x6E35cF57A41fA15eA0EaE9C33e751b01A784Fe7e' as Address,
     graphqlUrl: 'https://mainnet.intuition.sh/v1/graphql',
   },
 } as const

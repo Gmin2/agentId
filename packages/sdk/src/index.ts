@@ -32,7 +32,7 @@ export {
 } from './get-agent-reputation'
 
 // IPFS
-export { uploadJsonToPinata, type PinataResponse } from './ipfs'
+export { uploadJsonToPinata, pinThing, type PinataResponse, type PinThingParams } from './ipfs'
 
 // Re-export schema and graphql for convenience
 export * from '@agentid/schema'

@@ -2,13 +2,15 @@ import { toHex, decodeEventLog, type Hex } from 'viem'
 import { AgentRegistrationSchema, type AgentRegistration } from '@agentid/schema'
 import { MultiVaultAbi } from './abi'
 import type { AgentIdWriteConfig } from './config'
-import { uploadJsonToPinata } from './ipfs'
+import { pinThing, uploadJsonToPinata } from './ipfs'
 
 export interface CreateAgentAtomResult {
   /** Intuition Atom term_id */
   atomId: Hex
-  /** IPFS URI of the registration file */
+  /** IPFS URI of the registration file (pinThing URI used for atom) */
   ipfsUri: string
+  /** IPFS URI of full registration JSON (Pinata) */
+  fullRegistrationUri: string | null
   /** Transaction hash */
   txHash: Hex
 }
@@ -17,8 +19,9 @@ export interface CreateAgentAtomResult {
  * Register a new AI agent on Intuition Protocol.
  *
  * 1. Validates the registration against the ERC-8004 schema
- * 2. Uploads registration JSON to IPFS via Pinata
- * 3. Creates an Atom on the MultiVault contract
+ * 2. Pins name/description/image via Intuition's pinThing (so indexer labels correctly)
+ * 3. Optionally uploads full registration JSON to Pinata
+ * 4. Creates an Atom on the MultiVault contract
  *
  * @param config - SDK write configuration
  * @param registration - ERC-8004 compliant agent registration
@@ -32,11 +35,26 @@ export async function createAgentAtom(
   // 1. Validate
   AgentRegistrationSchema.parse(registration)
 
-  // 2. Upload to IPFS
-  const pinResponse = await uploadJsonToPinata(config.pinataApiJwt, registration)
-  const ipfsUri = `ipfs://${pinResponse.IpfsHash}`
+  // 2. Pin via Intuition's pinThing (ensures indexer gets name/image)
+  const ipfsUri = await pinThing(config.graphqlUrl, {
+    name: registration.name,
+    description: registration.description,
+    image: registration.image,
+    url: registration.endpoints?.[0]?.endpoint,
+  })
 
-  // 3. Get atom base cost
+  // 3. Also upload full registration JSON to Pinata for complete metadata
+  let fullRegistrationUri: string | null = null
+  if (config.pinataApiJwt) {
+    try {
+      const pinResponse = await uploadJsonToPinata(config.pinataApiJwt, registration)
+      fullRegistrationUri = `ipfs://${pinResponse.IpfsHash}`
+    } catch {
+      // Non-fatal — the atom still gets created with pinThing URI
+    }
+  }
+
+  // 4. Get atom base cost
   const atomCost = await config.publicClient.readContract({
     address: config.multiVaultAddress,
     abi: MultiVaultAbi,
@@ -45,7 +63,7 @@ export async function createAgentAtom(
 
   const totalValue = atomCost + depositAmount
 
-  // 4. Create atom on-chain
+  // 5. Create atom on-chain using pinThing URI
   const { request } = await config.publicClient.simulateContract({
     account: config.walletClient.account!,
     address: config.multiVaultAddress,
@@ -57,7 +75,7 @@ export async function createAgentAtom(
 
   const txHash = await config.walletClient.writeContract(request)
 
-  // 5. Wait for receipt and parse AtomCreated event
+  // 6. Wait for receipt and parse AtomCreated event
   const receipt = await config.publicClient.waitForTransactionReceipt({
     hash: txHash,
   })
@@ -87,5 +105,5 @@ export async function createAgentAtom(
 
   const atomId = (decoded.args as { termId: Hex }).termId
 
-  return { atomId, ipfsUri, txHash }
+  return { atomId, ipfsUri, fullRegistrationUri, txHash }
 }
