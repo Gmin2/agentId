@@ -1,8 +1,10 @@
 import { useState, useCallback } from 'preact/hooks'
 import { toHex, parseEther, decodeEventLog, type Hex } from 'viem'
-import { MultiVaultAbi } from '@agentids/sdk'
+import { MultiVaultAbi, GET_ATOM_BY_LABEL, pinThing, type GetAtomByLabelResponse } from '@agentids/sdk'
 import type { AgentRegistration } from '@agentids/schema'
 import { useWallet } from '../wallet.tsx'
+import { graphqlClient } from '../graphql.ts'
+import { GRAPHQL_URL } from '../chain.ts'
 
 type RegisterStep = 'idle' | 'uploading' | 'creating-atom' | 'adding-capabilities' | 'success' | 'error'
 
@@ -16,26 +18,47 @@ interface RegisterProgress {
   capabilitiesTotal: number
 }
 
-async function uploadToPinata(jwt: string, data: any): Promise<string> {
-  const res = await fetch('https://api.pinata.cloud/pinning/pinJSONToIPFS', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${jwt}`,
-    },
-    body: JSON.stringify({
-      pinataContent: data,
-      pinataMetadata: { name: `agentid-${data.name}` },
-    }),
-  })
+async function getOrCreateAtom(
+  publicClient: any,
+  walletClient: any,
+  multiVaultAddress: any,
+  label: string,
+  atomCost: bigint,
+): Promise<Hex> {
+  // Check if atom already exists via GraphQL
+  const response = await graphqlClient.request<GetAtomByLabelResponse>(
+    GET_ATOM_BY_LABEL,
+    { label },
+  )
 
-  if (!res.ok) {
-    const text = await res.text()
-    throw new Error(`Pinata upload failed: ${text}`)
+  if (response.atoms.length > 0) {
+    return response.atoms[0].term_id as Hex
   }
 
-  const result = await res.json()
-  return `ipfs://${result.IpfsHash}`
+  // Atom doesn't exist, create it
+  const { request } = await publicClient.simulateContract({
+    account: walletClient.account!,
+    address: multiVaultAddress,
+    abi: MultiVaultAbi,
+    functionName: 'createAtoms',
+    args: [[toHex(label)], [atomCost]],
+    value: atomCost,
+  })
+
+  const txHash = await walletClient.writeContract(request)
+  const receipt = await publicClient.waitForTransactionReceipt({ hash: txHash })
+
+  const atomLog = receipt.logs.find((log: any) => {
+    try {
+      const decoded = decodeEventLog({ abi: MultiVaultAbi, data: log.data, topics: log.topics })
+      return decoded.eventName === 'AtomCreated'
+    } catch { return false }
+  })
+
+  if (!atomLog) throw new Error(`Failed to create atom for "${label}"`)
+
+  const decoded = decodeEventLog({ abi: MultiVaultAbi, data: atomLog.data, topics: atomLog.topics })
+  return (decoded.args as { termId: Hex }).termId
 }
 
 export function useRegister() {
@@ -49,16 +72,20 @@ export function useRegister() {
 
   const register = useCallback(async (
     registration: AgentRegistration,
-    pinataJwt: string,
+    _pinataJwt: string,
     depositAmountEth: string,
     capabilities: Array<{ name: string; description: string; category: string }>,
   ) => {
     if (!walletClient) throw new Error('Wallet not connected')
 
     try {
-      // Step 1: Upload to IPFS
-      setProgress({ step: 'uploading', message: 'Uploading to IPFS...', capabilitiesDone: 0, capabilitiesTotal: capabilities.length })
-      const ipfsUri = await uploadToPinata(pinataJwt, registration)
+      // Step 1: Pin via Intuition's pinThing (ensures indexer labels atom correctly)
+      setProgress({ step: 'uploading', message: 'Pinning to IPFS via Intuition...', capabilitiesDone: 0, capabilitiesTotal: capabilities.length })
+      const ipfsUri = await pinThing(GRAPHQL_URL, {
+        name: registration.name,
+        description: registration.description,
+        image: registration.image,
+      })
 
       // Step 2: Create atom on-chain
       setProgress(p => ({ ...p, step: 'creating-atom', message: 'Creating agent atom on-chain...', ipfsUri }))
@@ -121,36 +148,9 @@ export function useRegister() {
           // We need: has-capability predicate atom ID and capability atom ID
           // For simplicity, create the triple with the capability name as the object
 
-          const predicateUri = toHex('has-capability')
-          const objectUri = toHex(capabilities[i].name)
-
-          // Create predicate + object atoms first (they may already exist)
-          const atomsCost = atomCost * 2n
-          const { request: atomsReq } = await publicClient.simulateContract({
-            account: walletClient.account!,
-            address: multiVaultAddress,
-            abi: MultiVaultAbi,
-            functionName: 'createAtoms',
-            args: [[predicateUri, objectUri], [atomCost, atomCost]],
-            value: atomsCost,
-          })
-
-          const atomsTxHash = await walletClient.writeContract(atomsReq)
-          const atomsReceipt = await publicClient.waitForTransactionReceipt({ hash: atomsTxHash })
-
-          // Parse atom IDs from events
-          const atomEvents = atomsReceipt.logs
-            .map(log => {
-              try {
-                return decodeEventLog({ abi: MultiVaultAbi, data: log.data, topics: log.topics })
-              } catch { return null }
-            })
-            .filter((e): e is NonNullable<typeof e> => e?.eventName === 'AtomCreated')
-
-          if (atomEvents.length < 2) throw new Error('Failed to create predicate/object atoms')
-
-          const predicateId = (atomEvents[0].args as { termId: Hex }).termId
-          const objectId = (atomEvents[1].args as { termId: Hex }).termId
+          // Look up or create predicate and object atoms
+          const predicateId = await getOrCreateAtom(publicClient, walletClient, multiVaultAddress, 'has-capability', atomCost)
+          const objectId = await getOrCreateAtom(publicClient, walletClient, multiVaultAddress, capabilities[i].name, atomCost)
 
           // Create the triple
           const { request: tripleReq } = await publicClient.simulateContract({

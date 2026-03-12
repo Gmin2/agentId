@@ -94,7 +94,7 @@ export const MultiVaultAbi = [
       { name: 'subjectId', type: 'bytes32', indexed: false, internalType: 'bytes32' },
       { name: 'predicateId', type: 'bytes32', indexed: false, internalType: 'bytes32' },
       { name: 'objectId', type: 'bytes32', indexed: false, internalType: 'bytes32' },
-    ],
+    ],0x06b
     anonymous: false,
   },
   {
